@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingCentral.XDK", "RingCentral.XDK\RingCentral.XDK.csproj", "{25644424-F7D3-4E08-A265-8FD20F779C47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RingCentral.TestConsole", "RingCentral.TestConsole\RingCentral.TestConsole.csproj", "{98C34199-E012-46F7-B39C-3DFED02452FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{25644424-F7D3-4E08-A265-8FD20F779C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25644424-F7D3-4E08-A265-8FD20F779C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25644424-F7D3-4E08-A265-8FD20F779C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25644424-F7D3-4E08-A265-8FD20F779C47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C34199-E012-46F7-B39C-3DFED02452FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C34199-E012-46F7-B39C-3DFED02452FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C34199-E012-46F7-B39C-3DFED02452FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C34199-E012-46F7-B39C-3DFED02452FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
