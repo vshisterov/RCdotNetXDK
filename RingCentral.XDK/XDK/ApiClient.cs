@@ -1,6 +1,4 @@
-﻿using System;
-using RingCentral;
-using RingCentral.SDK;
+﻿using RingCentral.SDK;
 using RingCentral.SDK.Http;
 
 namespace RingCentral.XDK
@@ -25,6 +23,8 @@ namespace RingCentral.XDK
         private string apiVersion;
 
         private Messaging.SmsService smsService;
+        private Extension.ExtensionService extensionService;
+        private CallHandling.CallHandlingService callHandlingService;
 
         #endregion
 
@@ -54,13 +54,33 @@ namespace RingCentral.XDK
             }
         }
 
+        public Extension.ExtensionService Extension
+        {
+            get
+            {
+                if (extensionService == null)
+                    extensionService = new Extension.ExtensionService(this);
+                return extensionService;
+            }
+        }
+
+        public CallHandling.CallHandlingService CallHandling
+        {
+            get
+            {
+                if (callHandlingService == null)
+                    callHandlingService = new CallHandling.CallHandlingService(this);
+                return callHandlingService;
+            }
+        }
+
         #endregion
 
         #region .ctor
 
         public ApiClient(SDK.SDK rcsdk)
         {
-            this.RCSDK = rcsdk;            
+            this.RCSDK = rcsdk;
         }
 
         public ApiClient(string appKey, string appSecret)
@@ -76,6 +96,8 @@ namespace RingCentral.XDK
         #endregion
 
         #region Methods
+
+        #region Auth
 
         public void Login(string phoneNumber, string password)
         {
@@ -93,6 +115,11 @@ namespace RingCentral.XDK
             Platform.Logout();
         }
 
+        #endregion
+
+        #region HTTP Requests
+
+        #region POST
 
         internal string PostFromExtension(string resource, string body)
         {
@@ -105,6 +132,46 @@ namespace RingCentral.XDK
             return this.Platform.Post(request).GetBody();
         }
 
+        #endregion
+
+        #region GET
+
+        internal string GetByIdFromAccount(string resource, string id)
+        {
+            return GetById(string.Concat(GetAccountApiPath(), resource), id);
+        }
+
+        internal string GetByIdFromExtension(string resource, string id)
+        {
+            return GetById(string.Concat(GetExtensionApiPath(), resource), id);
+        }
+
+        internal string GetById(string resource, string id)
+        {
+            Request request = new Request(string.Concat(GetBaseApiPath(), resource, "/", id));
+            return this.Platform.Get(request).GetBody();
+        }
+
+        #endregion
+
+        #region PUT
+
+        internal string PutByIdFromExtension(string resource, string id, string body)
+        {
+            return PutById(string.Concat(GetExtensionApiPath(), resource), id, body);
+        }
+
+        internal string PutById(string resource, string id, string body)
+        {
+            var request = new Request(string.Concat(GetBaseApiPath(), resource, "/", id), body);
+            return Platform.Put(request).GetBody();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region URI builders
 
         private string GetBaseApiPath()
         {
@@ -135,6 +202,8 @@ namespace RingCentral.XDK
         {
             return string.Concat(GetAccountApiPath(accountId), string.Format(EXTENSION_API_PATH, extensionId));
         }
+
+        #endregion
 
         #endregion
 

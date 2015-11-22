@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RingCentral.SDK;
-using RingCentral.XDK;
 
 namespace RingCentral.TestConsole
 {
@@ -13,9 +7,6 @@ namespace RingCentral.TestConsole
 
         private const string appKey = "";
         private const string appSecret = "";
-        private const string apiEndpoint = "https://api.ringcentral.com";
-        private const string appName = "TestConsole";
-        private const string appVersion = "1.0";
 
         private const string phoneNumber = "";
         private const string password = "";
@@ -24,13 +15,55 @@ namespace RingCentral.TestConsole
         private const string recipientPhoneNumber = "";
 
         static void Main(string[] args)
-        {            
-            SDK.SDK rcsdk = new SDK.SDK(appKey, appSecret, apiEndpoint, appName, appVersion);
+        {                        
 
-            var ringCentral = new RingCentral.XDK.ApiClient(rcsdk);
+            var ringCentral = new RingCentral.XDK.ApiClient(appKey, appSecret);
 
+            //Login
             ringCentral.Login(phoneNumber, password);
-            ringCentral.SMS.Send(senderPhoneNumber, recipientPhoneNumber, "Hello World");            
+
+            //Sending SMS
+            //ringCentral.SMS.Send(senderPhoneNumber, recipientPhoneNumber, "Hello World");            
+
+            //Reading Extension Info
+            var myExtension = ringCentral.Extension.GetCurrent();
+            Console.WriteLine("*** My Extension ***");
+            Console.WriteLine("First Name: \t{0}", myExtension.ContactInfo.FirstName);
+            Console.WriteLine("Last Name: \t{0}", myExtension.ContactInfo.LastName);
+            Console.WriteLine("Email: \t\t{0}", myExtension.ContactInfo.Email);
+            Console.WriteLine("Company: \t{0}", myExtension.ContactInfo.CompanyName);
+            Console.WriteLine();
+
+            //Reading Answering Rules
+            var defaultRule = ringCentral.CallHandling.GetBusinessHoursRule();
+            Console.WriteLine("*** Business Hours Rule ***");
+            foreach (var element in defaultRule.Forwarding.Elements)
+            {
+                Console.WriteLine("Group {0} numbers:", element.Index);
+                foreach (var number in element.Numbers)
+                    Console.WriteLine("\t\t{0} ({1})", number.PhoneNumber.GetE164(), number.Label);
+            }
+
+            //Updating Forwarding Number
+            var firstNumber = defaultRule.Forwarding.Elements[0].Numbers[0];
+            firstNumber.PhoneNumber = new XDK.PhoneNumber("+12345678912");
+            Console.Write("Updating first forwarding number... ");
+            try
+            {
+                firstNumber = ringCentral.CallHandling.UpdateForwardingNumber(firstNumber);
+                Console.WriteLine("succeded, new number: {0}", firstNumber.PhoneNumber.GetE164());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("failed: {0}", e.Message);
+            }
+            
+
+            //Waiting
+            Console.ReadLine();
+
+            //Logout
+            ringCentral.Logout();
 
         }
     }
