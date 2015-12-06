@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XDK\Account\Account.cs" />
+    <Compile Include="XDK\Account\AccountService.cs" />
     <Compile Include="XDK\CallHandling\AnsweringRule.cs" />
     <Compile Include="XDK\CallHandling\CallHandlingService.cs" />
     <Compile Include="XDK\CallHandling\ForwardingNumber.cs" />

@@ -22,8 +22,9 @@ namespace RingCentral.XDK
 
         private string apiVersion;
 
-        private Messaging.SmsService smsService;
+        private Account.AccountService accountService;
         private Extension.ExtensionService extensionService;
+        private Messaging.SmsService smsService;
         private CallHandling.CallHandlingService callHandlingService;
 
         #endregion
@@ -44,13 +45,13 @@ namespace RingCentral.XDK
             set { apiVersion = value; }
         }
 
-        public Messaging.SmsService SMS
+        public Account.AccountService Account
         {
             get
             {
-                if (smsService == null)
-                    smsService = new Messaging.SmsService(this);
-                return smsService;
+                if (accountService == null)
+                    accountService = new Account.AccountService(this);
+                return accountService;
             }
         }
 
@@ -71,6 +72,16 @@ namespace RingCentral.XDK
                 if (callHandlingService == null)
                     callHandlingService = new CallHandling.CallHandlingService(this);
                 return callHandlingService;
+            }
+        }
+
+        public Messaging.SmsService SMS
+        {
+            get
+            {
+                if (smsService == null)
+                    smsService = new Messaging.SmsService(this);
+                return smsService;
             }
         }
 
