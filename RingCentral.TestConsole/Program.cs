@@ -15,19 +15,27 @@ namespace RingCentral.TestConsole
         private const string recipientPhoneNumber = "";
 
         static void Main(string[] args)
-        {                        
+        {
 
-            var ringCentral = new RingCentral.XDK.ApiClient(appKey, appSecret);
+            var ringCentral = new RingCentral.XDK.ApiClient(appKey, appSecret);           
 
             //Login
             ringCentral.Login(phoneNumber, password);
 
             //Sending SMS
-            //ringCentral.SMS.Send(senderPhoneNumber, recipientPhoneNumber, "Hello World");            
+            ringCentral.SMS.Send(senderPhoneNumber, recipientPhoneNumber, "Hello World");            
+
+            //Reading Account Info
+            var myAccount = ringCentral.Account.GetCurrent();
+            Console.WriteLine("*** My Account ***");
+            Console.WriteLine("Account ID: {0}", myAccount.Id);
+            Console.WriteLine("Main Company Number: {0}", myAccount.MainNumber.GetE164());
 
             //Reading Extension Info
             var myExtension = ringCentral.Extension.GetCurrent();
             Console.WriteLine("*** My Extension ***");
+            Console.WriteLine("Extension ID: {0}", myExtension.Id);
+            Console.WriteLine("Extension Number: {0}", myExtension.ExtensionNumber);
             Console.WriteLine("First Name: \t{0}", myExtension.ContactInfo.FirstName);
             Console.WriteLine("Last Name: \t{0}", myExtension.ContactInfo.LastName);
             Console.WriteLine("Email: \t\t{0}", myExtension.ContactInfo.Email);
@@ -46,7 +54,7 @@ namespace RingCentral.TestConsole
 
             //Updating Forwarding Number
             var firstNumber = defaultRule.Forwarding.Elements[0].Numbers[0];
-            firstNumber.PhoneNumber = new XDK.PhoneNumber("+12345678912");
+            firstNumber.PhoneNumber = new XDK.PhoneNumber("+79052204322");
             Console.Write("Updating first forwarding number... ");
             try
             {
@@ -57,7 +65,7 @@ namespace RingCentral.TestConsole
             {
                 Console.WriteLine("failed: {0}", e.Message);
             }
-            
+
 
             //Waiting
             Console.ReadLine();
