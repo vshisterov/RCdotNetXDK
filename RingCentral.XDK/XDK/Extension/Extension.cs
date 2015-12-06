@@ -6,12 +6,15 @@ namespace RingCentral.XDK.Extension
     public class Extension
     {
 
+        public string Id { get; internal set; }
+        public int? ExtensionNumber { get; set; }
         public ContactInfo ContactInfo { get; set; }
 
         public override string ToString()
         {
             var obj = JObject.FromObject(new
             {
+                extensionNumber = ExtensionNumber?.ToString(),
                 contact = new
                 {
                     firstName = ContactInfo.FirstName,
@@ -29,8 +32,13 @@ namespace RingCentral.XDK.Extension
             var extensionJsonObject = JObject.Parse(jsonString);
             var contactJsonObject = extensionJsonObject["contact"];
 
+            string extensionNumberString = extensionJsonObject["extensionNumber"]?.ToString();
+            int? extensionNumber = string.IsNullOrEmpty(extensionNumberString) ? (int?)null : int.Parse(extensionNumberString);
+
             var result = new Extension
             {
+                Id = extensionJsonObject["id"].ToString(),
+                ExtensionNumber = extensionNumber,
                 ContactInfo = new ContactInfo
                 {
                     FirstName = contactJsonObject["firstName"].ToString(),
@@ -38,7 +46,7 @@ namespace RingCentral.XDK.Extension
                     Email = contactJsonObject["email"].ToString(),
                     CompanyName = contactJsonObject["company"].ToString()
                 }
-            };
+            };            
 
             return result;
 
